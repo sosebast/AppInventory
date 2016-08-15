@@ -1,0 +1,23 @@
+/*!
+ * jQuery UI Autocomplete 1.11.4
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * http://api.jqueryui.com/autocomplete/#theming
+ */
+.ui-autocomplete {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    list-style: none;
+    list-style-type: none;
+    display: block;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #555555;
+    vertical-align: middle;
+}

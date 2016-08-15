@@ -1,0 +1,116 @@
+﻿@model PagedList.IPagedList<AppInventory.Models.UserMachine>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Deployments" + (string.IsNullOrEmpty(ViewBag.CurrentDept) ? (string.IsNullOrEmpty(ViewBag.CurrentDeptHL) ? (string.IsNullOrEmpty(ViewBag.CurrentDeptFilter) ? "" : " - " + ViewBag.CurrentDeptFilter + "%") : " - " + ViewBag.CurrentDeptHL) : " - " + ViewBag.CurrentDept);
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <p>
+        <div>
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control col-md-4", placeholder = "Machine/Name/Login search.." })
+            @if (string.IsNullOrEmpty(ViewBag.CurrentDept))
+            {
+                @Html.TextBox("DeptFilter", ViewBag.CurrentDeptFilter as string, new { @class = "col-md-4 form-control", placeholder = "Dept filter e.g. TECH,APG..." })
+            }
+            <div class="col-md-3">
+                @Html.Hidden("Dept", ViewBag.CurrentDept as string)
+                @Html.Hidden("DeptHL", ViewBag.CurrentDeptHL as string)
+                <input type="submit" value="Search" class="btn-link-menu" />
+            </div>
+        </div>
+    </p>
+    <br />
+    <br />
+
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th>
+                @Html.ActionLink("Login ID", "Index", new { dept = ViewBag.CurrentDept, deptHL = ViewBag.CurrentDeptHL, sortOrder = ViewBag.LoginIDSortParm, currentFilter = ViewBag.CurrentFilter, deptFilter = ViewBag.CurrentDeptFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Fullname", "Index", new { dept = ViewBag.CurrentDept, deptHL = ViewBag.CurrentDeptHL, sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, deptFilter = ViewBag.CurrentDeptFilter })
+            </th>
+            <th>
+                Email
+            </th>
+            @if (string.IsNullOrEmpty(ViewBag.CurrentDept))
+            {
+                <th>
+                    @Html.ActionLink("Dept", "Index", new { dept = ViewBag.CurrentDept, deptHL = ViewBag.CurrentDeptHL, sortOrder = ViewBag.DeptSortParm, currentFilter = ViewBag.CurrentFilter, deptFilter = ViewBag.CurrentDeptFilter })
+                </th>
+            }
+            <th>
+                City
+            </th>
+            <th>
+                Region
+            </th>
+            <th>
+                Hostname
+            </th>
+            <th>
+                Primary?
+            </th>
+            <th>
+                OS
+            </th>
+            <th>
+
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.UserInfo.UserName, "Details", "UserInfoes", new { id = item.UserID }, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Email)
+                </td>
+                @if (string.IsNullOrEmpty(ViewBag.CurrentDept))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserInfo.Dept)
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Region)
+                </td>
+                <td>
+                    @Html.ActionLink(item.Machine.Name, "Details", "Machines", new { id = item.MachineID }, null)
+                </td>
+                <td>
+                    @Html.CheckBox("IsPrimary", item.IsPrimaryMachine.HasValue ? item.IsPrimaryMachine.Value : false, new { @class = "input", ReadOnly = "true" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Machine.O.Name)
+                </td>
+                <td>
+                    <div id="show-message" hidden="hidden" class="col-md-1">
+                        &nbsp;
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+<br />
+<div class="col-md-6">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+</div>
+<div class="col-md-6" style="text-align:right">Total Deployments: <b>@Model.TotalItemCount</b></div>
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptHL = ViewBag.CurrentDeptHL, deptFilter = ViewBag.CurrentDeptFilter }))

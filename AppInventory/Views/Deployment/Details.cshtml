@@ -1,0 +1,157 @@
+﻿@model AppInventory.Models.DeploymentBatch
+
+@{
+    ViewBag.Title = "Details";
+}
+@Scripts.Render("~/bundles/common")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.each($(".showRTGColor"), function () {
+            var color = getColorForPercentage(parseFloat($(this).text()) / 100)
+            $(this).css("background-color", color)
+        });
+    });
+</script>
+
+
+<h2>Details - @Model.Name</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Target End Dt
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlannedDt)
+        </dd>
+
+        <dt>
+            Deployment Start Dt
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Geo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Geo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Team)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Team)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModUser)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DeploymentBatchID }, new { @class = "btn-link-menu" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+</p>
+@{
+    var depts = ViewBag.BatchDeptApps as List<AppInventory.Models.DeploymentBactchDeptSummary>;
+    string totalAppCount = Convert.ToString(ViewBag.TotalAppCount);
+}
+@if (depts.Count() != 0)
+{
+    <br />
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th class="col-md-4">
+                Departments
+            </th>
+            <th class="col-md-2">
+                Deployments
+            </th>
+            <th class="col-md-2">
+                Users
+            </th>
+            <th class="col-md-2">
+                Apps
+            </th>
+            <th class="col-md-1 text-center">
+                %RTG
+            </th>
+            <th class="col-md-1 text-center">
+                %Complete
+            </th>
+        </tr>
+        <tr>
+            <th class="col-md-4">
+                Total
+            </th>
+            <th class="col-md-2">
+                @Html.ActionLink(Model.DeploymentBatchUsers.Count().ToString(), "Users", new { id = Model.DeploymentBatchID }, new { target = "_blank" })
+            </th>
+            <th class="col-md-2">
+                @Html.ActionLink(depts.Sum(a => a.UserCount).ToString(), "Index", "UserInfoes", new { DeploymentID = Model.DeploymentBatchID }, new { target = "_blank" })
+            </th>
+            <th class="col-md-2">
+                @Html.ActionLink(totalAppCount, "Index", "AppCI", new { DeploymentID = Model.DeploymentBatchID }, new { target = "_blank" })
+            </th>
+            <th class="col-md-1 text-center showRTGColor">
+                @ViewBag.TotalRTG
+            </th>
+            <th class="col-md-1 text-center showRTGColor">
+                @ViewBag.TotalComplete
+            </th>
+        </tr>
+        @foreach (var item in depts)
+        {
+            <tr>
+                <td class="col-md-4">
+                    @Html.DisplayFor(modelItem => item.Dept)
+                </td>
+                <td class="col-md-2">
+                    @Html.ActionLink(item.Count.ToString(), "Users", new { id = Model.DeploymentBatchID, Dept = item.Dept }, new { @class = "btn-link-label", target = "_blank" })
+                </td>
+                <td class="col-md-2">
+                    @Html.ActionLink(item.UserCount.ToString(), "Index", "UserInfoes", new { DeploymentID = Model.DeploymentBatchID, Dept = item.Dept }, new { @class = "btn-link-label", target = "_blank" })
+                </td>
+                <td class="col-md-2">
+                    @Html.ActionLink(item.AppCount.ToString(), "Index", "AppCI", new { DeploymentID = Model.DeploymentBatchID, Dept = item.Dept }, new { @class = "btn-link-label", target = "_blank" })
+                </td>
+                <td class="col-md-1 text-center showRTGColor">
+                    @Html.DisplayFor(modelItem => item.RTG)
+                </td>
+                <td class="col-md-1 text-center showRTGColor">
+                    @Html.DisplayFor(modelItem => item.PercentageComplete)
+                </td>
+            </tr>
+        }
+
+    </table>
+}

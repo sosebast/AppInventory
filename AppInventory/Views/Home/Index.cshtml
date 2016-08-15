@@ -1,0 +1,191 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@Styles.Render("~/Content/themes/base/css")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/chart")
+@Scripts.Render("~/bundles/common")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        var deptAppSumChart;
+        var depUserSumChart;
+
+        showDeptAppSummary = function () {
+            $('html, body').css("cursor", "wait");
+            if (deptAppSumChart != undefined)
+                deptAppSumChart.destroy();
+            
+            $.getJSON("chart/deptAppSummary")
+             .done(function (chartData) {
+                 var title = "Total Application Count: " + chartData.SumTotal.toString();
+                 deptAppSumChart = barChart($("#depAppSum"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters, false, title);
+             });
+            $('html, body').css("cursor", "auto");
+        }
+
+        showDeptUserSummary = function () {
+            $('html, body').css("cursor", "wait");
+            if (depUserSumChart != undefined)
+                depUserSumChart.destroy();
+
+            $.getJSON("chart/deptUserSummary")
+             .done(function (chartData) {
+                 var title = "Total Deployment Count: " + chartData.SumTotal.toString();
+                 depUserSumChart = barChart($("#depUserSum"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters, false, title);
+             });
+            $('html, body').css("cursor", "auto");
+        }
+
+        showDeptAppSummary();
+        showDeptUserSummary();
+        
+        $.getJSON("chart/deployment")
+         .done(function (chartData) {
+             barChart($("#depChart"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters);
+         });
+
+        $.getJSON("chart/appStatus")
+         .done(function (chartData) {
+             barChart($("#remChart"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters);
+         });
+
+        $.getJSON("chart/appPkgStatus")
+         .done(function (chartData) {
+             barChart($("#appPkgStatus"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters);
+         });
+
+        $.getJSON("chart/appDisposition")
+         .done(function (chartData) {
+             barChart($("#dispChart"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters);
+         });
+
+        $.getJSON("chart/appScope")
+        .done(function (chartData) {
+            piChart($("#appScope"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters);
+        });
+
+        $.getJSON("chart/appModel")
+        .done(function (chartData) {
+            piChart($("#appModel"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters);
+        });
+
+        var detailChart = null;
+        showDeptHLAppLandscape = function (deptHL) {
+            $('html, body').css("cursor", "wait");
+            if (detailChart != null)
+                detailChart.destroy();
+
+           
+            $.getJSON("chart/deptHLAppLandscape", { deptHL: deptHL })
+            .done(function (chartData) {
+                var title = "Applications - " + deptHL + " (Total: " + chartData.SumTotal.toString() + ")";
+
+                var showDialog = $("#showDetailChart").dialog({
+                    modal: true, height: 600, width: 1080, title: title
+                });
+
+                detailChart = barChart($("#detailChart"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters, false);
+                var titlebar = showDialog.parent().find('.ui-dialog-title');
+                titlebar.css('cursor', 'pointer');
+                titlebar.attr('title', 'Click here to see all apps under ' + deptHL);
+                titlebar.click(function (e) {
+                    location.href = "/AppCI?DeptHL=" + encodeURIComponent(deptHL);
+                });
+            });
+            $('html, body').css("cursor", "auto");
+        }
+
+        showDeptHLUser = function (deptHL) {
+            $('html, body').css("cursor", "wait");
+
+            if (detailChart != null)
+                detailChart.destroy();
+
+            $.getJSON("chart/deptHLUser", { deptHL: deptHL })
+            .done(function (chartData) {
+                var title = "Users/Computers - " + deptHL + " (Total: " + chartData.SumTotal.toString() + ")";
+                var showDialog = $("#showDetailChart").dialog({
+                    modal: true, height: 600, width: 1080, title: title
+                });
+                detailChart = barChart($("#detailChart"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters, false);
+                var titlebar = showDialog.parent().find('.ui-dialog-title');
+                titlebar.css('cursor', 'pointer');
+                titlebar.attr('title', 'Click here to see all deployments under ' + deptHL);
+                titlebar.click(function (e) {
+                    location.href = "/UserMachines?DeptHL=" + encodeURIComponent(deptHL);
+                });
+            });
+            $('html, body').css("cursor", "auto");
+        }
+    });
+</script>
+
+<div>
+    <h1>Application Inventory Dashboard</h1>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-6 table-bordered">
+        <div class="lead" onclick="location.href='/reports/deptappdrilldown'" style="cursor:pointer" title="Click here for more detailed report.">Applications</div>
+        <hr />
+        <canvas id="depAppSum" width="400" height="200" style="cursor:pointer"></canvas>
+    </div>
+    <div class="col-md-6 table-bordered">
+        <div class="lead" onclick="location.href='/reports/deptuserdrilldown'" title="Click here for more detailed report." style="cursor:pointer">Users/Computers</div>
+        <hr />
+        <canvas id="depUserSum" width="400" height="200" style="cursor:pointer"></canvas>
+    </div>
+    
+</div>
+<div class="row" id="showDetailChart" hidden="hidden">
+    <div class="col-md-12">
+        <canvas id="detailChart" width="1020" height="500" style="cursor:pointer"></canvas>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-6 table-bordered">
+        <div class="lead">Disposition Status</div>
+        <hr />
+        <canvas id="dispChart" width="400" height="200" style="cursor:pointer"></canvas>
+    </div>
+    <div class="col-md-6 table-bordered">
+        <div class="lead" onclick="location.href='/Deployment'" style="cursor:pointer" title="Click here to see the list of deployments.">Deployments</div>
+        <hr />
+        <canvas id="depChart" width="400" height="200" style="cursor:pointer"></canvas>
+    </div>
+ </div>
+<br />
+<div class="row">
+    <div class="col-md-6 table-bordered">
+        <div class="lead">Remediation Status</div>
+        <hr />
+        <canvas id="remChart" width="400" height="200" style="cursor:pointer"></canvas>
+    </div>
+    <div class="col-md-6 table-bordered">
+        <div class="lead">Packaging Status</div>
+        <hr />
+        <canvas id="appPkgStatus" width="400" height="200" style="cursor:pointer"></canvas>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-6 table-bordered">
+        <div class="lead">Application Scope</div>
+        <hr />
+        <canvas id="appScope" width="400" height="200" style="cursor:pointer"></canvas>
+    </div>
+    <div class="col-md-6 table-bordered">
+        <div class="lead">App Model</div>
+        <hr />
+        <canvas id="appModel" width="400" height="200" style="cursor:pointer"></canvas>
+    </div>
+</div>
+
+

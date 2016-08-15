@@ -1,0 +1,80 @@
+﻿@model AppInventory.Models.DeploymentBatch
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>DeploymentBatch</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+          Target End Dt
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PlannedDt)
+        </dd>
+
+        <dt>
+            Deployment Start Dt
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Geo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Geo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Team)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Team)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModUser)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn-link-menu" /> |
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+        </div>
+    }
+</div>

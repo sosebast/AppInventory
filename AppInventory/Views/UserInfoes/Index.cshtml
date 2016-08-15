@@ -1,0 +1,99 @@
+﻿@model PagedList.IPagedList<AppInventory.Models.UserInfo>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Users" + (!string.IsNullOrEmpty(ViewBag.CurrentDep) ? string.Format("(Deployment:{0})", ViewBag.CurrentDep) : "") 
+        +  (!string.IsNullOrEmpty(ViewBag.CurrentDept) ? String.Format("(Dept:{0})", ViewBag.CurrentDept) : "");
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+    <p>
+        <div>
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control col-md-4", placeholder = "Name/Login search..." })
+            @if (string.IsNullOrEmpty(ViewBag.CurrentDept))
+            {
+                @Html.TextBox("DeptFilter", ViewBag.CurrentDeptFilter as string, new { @class = "col-md-4 form-control", placeholder = "Dept filter e.g. TECH,APG..." })
+            }
+            <div class="col-md-3">
+                @Html.Hidden("Dept", ViewBag.CurrentDept as string)
+                @Html.Hidden("DeploymentID", ViewBag.CurrentDeploymentID as string)
+                <input type="submit" value="Search" class="btn-link-menu" />
+            </div>
+        </div>
+    </p>
+    <br />
+    <br />
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th>
+                @Html.ActionLink("Login ID", "Index", new { sortOrder = ViewBag.LoginIDSortParm, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptFilter = ViewBag.CurrentDeptFilter, deploymentID = ViewBag.CurrentDeploymentID })
+            </th>
+            <th>
+                @Html.ActionLink("Fullname", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptFilter = ViewBag.CurrentDeptFilter, deploymentID = ViewBag.CurrentDeploymentID })
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                @Html.ActionLink("Dept", "Index", new { sortOrder = ViewBag.DeptSortParm, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptFilter = ViewBag.CurrentDeptFilter, deploymentID = ViewBag.CurrentDeploymentID })
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Country
+            </th>
+            <th>
+                Owner
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.UserName, "Details", new { id = item.UserID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dept)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Country)
+                </td>
+                <td>
+                    @if (item.UserOwnerships.Count != 0)
+                    {
+                        @Html.ActionLink(item.UserOwnerships.First().UserInfo1.UserName, "Details", new { id = item.UserOwnerships.First().OwnerUserID })
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <div class="col-md-6">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+    <div class="col-md-6" style="text-align:right">Total Users: <b>@Model.TotalItemCount</b></div>
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptFilter = ViewBag.CurrentDeptFilter, deploymentID = ViewBag.CurrentDeploymentID }))
+}

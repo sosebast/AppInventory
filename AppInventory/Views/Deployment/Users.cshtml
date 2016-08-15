@@ -1,0 +1,200 @@
+﻿@model PagedList.IPagedList<AppInventory.Models.DeploymentBatchUser>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Deployment Users Machines";
+}
+
+<h2>Deployments - @ViewBag.DeploymentBatch @( !string.IsNullOrEmpty(ViewBag.CurrentDept) ? string.Format("({0})", ViewBag.CurrentDept) : (string.IsNullOrEmpty(ViewBag.CurrentDeptFilter) ? "" :String.Format("({0}%)", ViewBag.CurrentDeptFilter)))</h2>
+
+@Styles.Render("~/Content/themes/base/css")
+@Styles.Render("~/Content/chosen/css")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/chosen")
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var depStatusData;
+
+        $.getJSON("/master/deploymentStatus")
+        .done(function (data) {
+            depStatusData = data;
+        });
+
+
+        updateData = function (event, ui) {
+            var $tr = $(this).closest("tr");
+            var $itemDeploymentStatus = $tr.find(".DeploymentStatus");
+            var $itemDeploymentBatchUserID = $tr.find(".DeploymentBatchUserID");
+            var $itemRowVersion = $tr.find(".RowVersion");
+            var $itemMessage = $tr.find("#show-message");
+
+            var DeploymentBatchUser = {
+                "DeploymentBatchUserID": $itemDeploymentBatchUserID.val(),
+                "RowVersion": $itemRowVersion.val(),
+                "DeploymentStatus": $itemDeploymentStatus.val(),
+            }
+
+            $.ajax({
+                url: '/Deployment/UpdateBatchUser',
+                data: JSON.stringify(DeploymentBatchUser),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                success: function (result) {
+                    isSuccess = result;
+                },
+                error: function (result) {
+                    isSuccess = result;
+                }
+
+            }).done(function () {
+
+                var result = jQuery.parseJSON(isSuccess);
+                if (result.Result == "1") {
+                    $itemRowVersion.val(result.RowVersion);
+                    $itemMessage.show("fast", function () {
+                        $itemMessage.removeClass("form-control-data-error");
+                        $itemMessage.addClass("form-control-data-saved");
+                        $itemMessage.attr("title", result.Message);
+                    });
+                }
+                else {
+                    $itemMessage.show("fast", function () {
+                        $itemMessage.removeClass("form-control-data-saved");
+                        $itemMessage.addClass("form-control-data-error");
+                        $itemMessage.attr("title", result.Message);
+                    });
+                }
+            });
+        }
+
+        $(".DeploymentStatus").autocomplete(
+            {
+                source: function (request, response) {
+                    response($.map(depStatusData, function (item) {
+                        return { label: item.text, value: item.text };
+                    }))
+                }
+                , messages: { noResults: "", results: "" }
+            }
+            , { minLength: 0 }
+            , { change: updateData }).focus(function () {
+                $(this).autocomplete("search", $(this).val());
+            });
+    });
+</script>
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <p>
+        <div>
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control col-md-4", placeholder = "Machine/Name/Login search.." })
+            @if (string.IsNullOrEmpty(ViewBag.CurrentDept))
+            {
+                @Html.TextBox("DeptFilter", ViewBag.CurrentDeptFilter as string, new { @class = "col-md-4 form-control", placeholder = "Dept filter e.g. TECH,APG..." })
+            }
+            <div class="col-md-3">
+                @Html.Hidden("Dept", ViewBag.CurrentDept as string)
+                <input type="submit" value="Search" class="btn-link-menu" />
+            </div>
+        </div>
+    </p>
+    <br />
+    <br />
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th>
+                @Html.ActionLink("Login ID", "Users", new { id = ViewBag.DeploymentBatchID, sortOrder = ViewBag.LoginIDSortParm, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptFilter = ViewBag.CurrentDeptFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Fullname", "Users", new { id = ViewBag.DeploymentBatchID, sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptFilter = ViewBag.CurrentDeptFilter })
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                @Html.ActionLink("Dept", "Users", new { id = ViewBag.DeploymentBatchID, sortOrder = ViewBag.DeptSortParm, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptFilter = ViewBag.CurrentDeptFilter })
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Country
+            </th>
+            <th>
+                Hostname
+            </th>
+            <th>
+                Primary?
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.ActionLink(item.UserInfo.UserName, "BatchUser", new { id = item.DeploymentBatchUserID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Dept)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.UserInfo.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.UserInfo.Country)
+                </td>
+                <td>
+                    @Html.ActionLink(item.Machine.Name, "Details", "Machines", new { id = item.Win7MachineID }, null)
+                </td>
+                <td>
+                    @{
+            var userMachine = item.Machine.UserMachines.Where(a => a.UserID == item.UserID).FirstOrDefault();
+            bool isPrimary = userMachine.IsPrimaryMachine.HasValue ? userMachine.IsPrimaryMachine.Value : false;
+                    }
+                    @Html.CheckBox("IsPrimary", isPrimary, new { @class = "input", ReadOnly = "true" })
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => item.DeploymentStatu.Status, new { htmlAttributes = new { @class = "row-control DeploymentStatus", @style = "width:100px" } })
+                    @Html.HiddenFor(model => item.DeploymentBatchUserID, new { @class = "DeploymentBatchUserID" })
+                    @Html.HiddenFor(model => item.RowVersion, new { @class = "RowVersion" })
+                </td>
+                <td>
+                    <div id="show-message" hidden="hidden" class="col-md-1">
+                        &nbsp;
+                    </div>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+<br />
+<div class="col-md-6">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+</div>
+<div class="col-md-6" style="text-align:right">Total Users: <b>@Model.TotalItemCount</b></div>
+
+@Html.PagedListPager(Model, page => Url.Action("Users", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, dept = ViewBag.CurrentDept, deptFilter = ViewBag.CurrentDeptFilter }))
+
+@Html.ActionLink("Back to Details", "Details", new { id = ViewBag.DeploymentBatchID }, new { @class = "btn-link-menu" })
+@Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })

@@ -1,0 +1,152 @@
+﻿@model AppInventory.Models.AppCI
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>AppCI</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CMID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CMID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CMModel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CMModel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FolderPath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FolderPath)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeploymentTool)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentTool)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeploymentGroup)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentGroup)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RebootReq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RebootReq)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LogonReq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LogonReq)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LicensingInfo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LicensingInfo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Deleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeletedOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.App.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.App.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AppDisposition.Disposition)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppDisposition.Disposition)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AppStatu.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppStatu.Status)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn-link-menu" /> |
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+        </div>
+    }
+</div>

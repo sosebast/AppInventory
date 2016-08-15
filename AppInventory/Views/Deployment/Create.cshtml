@@ -1,0 +1,79 @@
+﻿@model AppInventory.Models.DeploymentBatch
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@Styles.Render("~/Content/themes/base/css")
+@Scripts.Render("~/bundles/jqueryui")
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (!Modernizr.inputtypes.date) {
+            $('.datefield').datepicker({
+                changeMonth: true,
+                changeYear: true
+            });
+        }
+    });
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Deployment Batch</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Target End Dt", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PlannedDt, new { htmlAttributes = new { @class = "datefield", type = "date" } })
+                @Html.ValidationMessageFor(model => model.PlannedDt)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Deployment Start Dt", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DeploymentDt, new { htmlAttributes = new { @class = "datefield", type = "date" } })
+                @Html.ValidationMessageFor(model => model.DeploymentDt)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Geo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Geo)
+                @Html.ValidationMessageFor(model => model.Geo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Team, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Team)
+                @Html.ValidationMessageFor(model => model.Team)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn-link-menu" />
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+            </div>
+        </div>
+    </div>
+}
+

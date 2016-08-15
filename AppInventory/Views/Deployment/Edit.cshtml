@@ -1,0 +1,303 @@
+﻿@model AppInventory.Models.DeploymentBatch
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+@Styles.Render("~/Content/themes/base/css")
+@Scripts.Render("~/bundles/jqueryui")
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (!Modernizr.inputtypes.date) {
+            $(function () {
+                $('.datefield').datepicker({
+                    changeMonth: true,
+                    changeYear: true
+                }).get(0).setAttribute("type", "text");;
+            });
+        }
+
+        var id = @ViewContext.RouteData.Values["id"];
+
+
+        $("#searchterm").keyup(function (e) {
+            var q = $("#searchterm").val();
+
+            $("#results").empty();
+            $("#search-message").removeClass("has-error");
+            $("#search-message").text("Search and add more depts...");
+            if (q.length >= 3) {
+                $("#search-message").text("Loading search results...");
+                $('html, body').css("cursor", "wait");
+
+                var bacthDept =  { DeploymentBatchID:id,  Dept: [q], UpdateAll: false, RowVersion:null }
+                $.ajax({url: "/search/depUserMachineDept", data:bacthDept, type : "POST", dataType: 'json',
+                    success: function (result) {
+
+                        $("#results").empty();
+
+                        if (result.length != 0) {
+                            $("#search-message").text(result.length + " depts found...");
+                            $("#results").append("<tr><th class='col-md-6'>Departments</th><th class='col-md-2'>Count</th><th class='col-md-2'>Users</th><th class='col-md-2'>Apps</th><th class='col-md-4'><input type='button' value='Add Selected' onclick='addDepts(false)' class='btn-link-menu' /></th></tr>");
+                            var total = 0; userTotal = 0;
+
+                            $.each(result, function (i, item) {
+                                var url = "/UserMachines/Index?Dept=" + encodeURIComponent(item.Dept);
+                                var action = "<input type='checkbox'  onclick='addDept(\"" + item.Dept + "\", this.checked)' class='control'  />";
+                                total += parseInt(item.Count, 10) || 0;
+                                userTotal += parseInt(item.UserCount, 10) || 0;
+
+                                $("#results").append("<tr><td class='col-md-6'><a class='btn-link-label' href='" + url + "' target='_blank'>"+ item.Dept + "</a></td><td class='col-md-2'>" + item.Count + "</td><td class='col-md-2'>" + item.UserCount + "</td><td class='col-md-2'>" + item.AppCount + "</td><td class='col-md-2'>" + action + "</td></tr>");
+                            });
+
+                            var action = "<input type='button' value='Add All' onclick='addDepts(true)' class='btn-link-menu' />";
+                            $("#results").append("<tr><th class='col-md-6'>Total Count</th><th class='col-md-2'>" + total + "</th><th class='col-md-2'>" + userTotal + "</th><th class='col-md-2'></th><th class='col-md-4'>" + action + "</th></tr>");
+                        }
+                        else {
+                            $("#search-message").text("No results found. Search again...");
+                        }
+
+                        $('html, body').css("cursor", "auto");
+                    }, error : function() {
+                        $('html, body').css("cursor", "auto");
+                    }});
+            }
+        });
+
+        removeDept = function(depID, dept, removeAll) {
+            var DeploymentBatchDeptUpdate = {
+                "DeploymentBatchID":depID,
+                "Dept": [dept],
+                "UpdateAll" : removeAll,
+                "RowVersion": $("#RowVersion").val()
+            }
+
+            $.ajax({
+                url: '/Deployment/RemoveBatchDept',
+                data: JSON.stringify(DeploymentBatchDeptUpdate),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                success: function (result) {
+                    isSuccess = result;
+                },
+                error: function (result) {
+                    isSuccess = result;
+                }
+
+            }).done(function () {
+
+                var result = jQuery.parseJSON(isSuccess);
+                if (result.Result == "1") {
+                    location.reload();
+                }
+                else {
+                    $("#search-message").addClass("has-error");
+                    $("#search-message").text("Error while removing the dept. Try again...");
+                }
+            });
+        }
+
+        var depts = [];
+        addDept = function(dept, checked) {
+            if(checked) {
+                depts.push(dept);
+            }
+            else {
+                var index = depts.indexOf(dept, 1);
+                if(index > -1){
+                    depts.splice(index, 1);
+                }
+            }
+        }
+
+        addDepts = function(all) {
+
+            if(all) {
+                depts = [$("#searchterm").val()];
+            }
+
+            var DeploymentBatchDeptUpdate = {
+                "DeploymentBatchID":id,
+                "Dept": depts,
+                "UpdateAll" : all,
+                "RowVersion": $("#RowVersion").val()
+            }
+
+            $.ajax({
+                url: '/Deployment/AddBatchDept',
+                data: JSON.stringify(DeploymentBatchDeptUpdate),
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: "json",
+                success: function (result) {
+                    isSuccess = result;
+                },
+                error: function (result) {
+                    isSuccess = result;
+                }
+
+            }).done(function () {
+
+                var result = jQuery.parseJSON(isSuccess);
+                if (result.Result == "1") {
+                    location.reload();
+                }
+                else {
+                    $("#search-message").addClass("has-error");
+                    $("#search-message").text("Error while adding the dept. Try again...");
+                }
+            });
+        }
+
+    });
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Deployment Batch - @Model.Name</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.DeploymentBatchID)
+        @Html.HiddenFor(model => model.RowVersion)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Target End Dt", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("PlannedDt", string.Format("{0:yyyy-MM-dd}", Model.PlannedDt), new { @class = "datefield", type = "date" })
+                @Html.ValidationMessageFor(model => model.PlannedDt)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Deployment Start Dt", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("DeploymentDt", string.Format("{0:yyyy-MM-dd}", Model.DeploymentDt.HasValue ? Model.DeploymentDt : null), new { @class = "datefield", type = "date" })
+                @Html.ValidationMessageFor(model => model.DeploymentDt)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Geo, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Geo)
+                @Html.ValidationMessageFor(model => model.Geo)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Team, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Team)
+                @Html.ValidationMessageFor(model => model.Team)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn-link-menu" />
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+            </div>
+        </div>
+    </div>
+
+}
+
+<hr />
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <p>
+        <div>
+            @Html.TextBox("searchterm", ViewBag.CurrentFilter as string, new { @class = "form-control col-md-4" })
+            <div id="search-message" class="col-md-8 control-label">
+                Search and add more depts...
+            </div>
+        </div>
+    </p>
+    <br />
+    <br />
+    <table id="results" class="table-striped col-lg-12"></table>
+}
+
+@{
+    var depts = ViewBag.BatchDeptApps as List<AppInventory.Models.DeploymentBactchDeptSummary>;
+    string totalAppCount = Convert.ToString(ViewBag.TotalAppCount);
+}
+
+@if (depts.Count() != 0)
+{
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th class="col-md-6">
+                Departments
+            </th>
+            <th class="col-md-2">
+                Deployments
+            </th>
+            <th class="col-md-2">
+                Users
+            </th>
+            <th class="col-md-2">
+                Apps
+            </th>
+            <th class="col-md-2">
+                Remove?
+            </th>
+        </tr>
+        <tr>
+            <th class="col-md-6">
+                Total
+            </th>
+            <th class="col-md-2">
+                @Html.ActionLink(Model.DeploymentBatchUsers.Count().ToString(), "Users", new { id = Model.DeploymentBatchID }, new {target = "_blank" })
+            </th>
+            <th class="col-md-2">
+                @Html.ActionLink(depts.Sum(a => a.UserCount).ToString(), "Index", "UserInfoes", new { DeploymentID = Model.DeploymentBatchID }, new { target = "_blank" })
+            </th>
+            <th class="col-md-2">
+                @Html.ActionLink(totalAppCount, "Index", "AppCI", new { DeploymentID = Model.DeploymentBatchID }, new { target = "_blank" })
+            </th>
+            <th class="col-md-2">
+                <input type="button" value="Remove All" onclick="removeDept(@Model.DeploymentBatchID, '', true )" class="btn-link-menu" />
+            </th>
+        </tr>
+        @foreach (var item in depts)
+        {
+            <tr>
+                <td class="col-md-6">
+                    @Html.DisplayFor(modelItem => item.Dept)
+                </td>
+                <td class="col-md-2">
+                    @Html.ActionLink(item.Count.ToString(), "Users", new { id = Model.DeploymentBatchID, Dept = item.Dept }, new { @class = "btn-link-label", target = "_blank" })
+                </td>
+                <td class="col-md-2">
+                    @Html.ActionLink(item.UserCount.ToString(), "Index", "UserInfoes", new { DeploymentID = Model.DeploymentBatchID, Dept = item.Dept }, new { @class = "btn-link-label", target = "_blank" })
+                </td>
+                <td class="col-md-2">
+                    @Html.ActionLink(item.AppCount.ToString(), "Index", "AppCI", new { DeploymentID = Model.DeploymentBatchID, Dept = item.Dept }, new { @class = "btn-link-label", target = "_blank" })
+                </td>
+                <td class="col-md-2">
+                    <input type="button" value="Remove" onclick="removeDept(@Model.DeploymentBatchID, '@(item.Dept)', false )" class="btn-link-menu" />
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+

@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AppInventoryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Machine">
+          <Key>
+            <PropertyRef Name="MachineID" />
+          </Key>
+          <Property Name="MachineID" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DistinguishedName" Type="nvarchar" MaxLength="512" />
+          <Property Name="Manufacturer" Type="nvarchar" MaxLength="256" />
+          <Property Name="Model" Type="nvarchar" MaxLength="256" />
+          <Property Name="SerialNumber" Type="nvarchar" MaxLength="256" />
+          <Property Name="AssetTagNumber" Type="nvarchar" MaxLength="256" />
+          <Property Name="Type" Type="nvarchar" MaxLength="100" />
+          <Property Name="OSID" Type="int" />
+          <Property Name="ModDt" Type="datetime" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ModUser" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OS">
+          <Key>
+            <PropertyRef Name="OSID" />
+          </Key>
+          <Property Name="OSID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="512" />
+          <Property Name="ModDt" Type="datetime" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ModUser" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DistinguishedName" Type="nvarchar" MaxLength="512" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="256" />
+          <Property Name="Title" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmployeeID" Type="nvarchar" MaxLength="256" />
+          <Property Name="Dept" Type="nvarchar" MaxLength="256" />
+          <Property Name="CostCenter" Type="nvarchar" MaxLength="256" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="Address" Type="nvarchar" MaxLength="512" />
+          <Property Name="City" Type="nvarchar" MaxLength="256" />
+          <Property Name="State" Type="nvarchar" MaxLength="256" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="256" />
+          <Property Name="Country" Type="nvarchar" MaxLength="256" />
+          <Property Name="Region" Type="nvarchar" MaxLength="256" />
+          <Property Name="Migrated" Type="bit" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="DeletedOn" Type="datetime" />
+          <Property Name="ModDt" Type="datetime" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ModUser" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserMachine">
+          <Key>
+            <PropertyRef Name="UserMachineID" />
+          </Key>
+          <Property Name="UserMachineID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="MachineID" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="IsPrimaryMachine" Type="bit" />
+          <Property Name="ModDt" Type="datetime" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ModUser" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserOwnership">
+          <Key>
+            <PropertyRef Name="UserOwnershipID" />
+          </Key>
+          <Property Name="UserOwnershipID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="OwnerUserID" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ModDt" Type="datetime" Nullable="false" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="ModUser" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Machine_OS">
+          <End Role="OS" Type="Self.OS" Multiplicity="0..1" />
+          <End Role="Machine" Type="Self.Machine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OS">
+              <PropertyRef Name="OSID" />
+            </Principal>
+            <Dependent Role="Machine">
+              <PropertyRef Name="OSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMachine_Machine">
+          <End Role="Machine" Type="Self.Machine" Multiplicity="1" />
+          <End Role="UserMachine" Type="Self.UserMachine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Machine">
+              <PropertyRef Name="MachineID" />
+            </Principal>
+            <Dependent Role="UserMachine">
+              <PropertyRef Name="MachineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMachine_UserInfo">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
+          <End Role="UserMachine" Type="Self.UserMachine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserMachine">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserOwnership_UserInfo">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
+          <End Role="UserOwnership" Type="Self.UserOwnership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserOwnership">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserOwnership_UserInfoOwner">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
+          <End Role="UserOwnership" Type="Self.UserOwnership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserOwnership">
+              <PropertyRef Name="OwnerUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AppInventoryModelStoreContainer">
+          <EntitySet Name="Machine" EntityType="Self.Machine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OS" EntityType="Self.OS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserMachine" EntityType="Self.UserMachine" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserOwnership" EntityType="Self.UserOwnership" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Machine_OS" Association="Self.FK_Machine_OS">
+            <End Role="OS" EntitySet="OS" />
+            <End Role="Machine" EntitySet="Machine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMachine_Machine" Association="Self.FK_UserMachine_Machine">
+            <End Role="Machine" EntitySet="Machine" />
+            <End Role="UserMachine" EntitySet="UserMachine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMachine_UserInfo" Association="Self.FK_UserMachine_UserInfo">
+            <End Role="UserInfo" EntitySet="UserInfo" />
+            <End Role="UserMachine" EntitySet="UserMachine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserOwnership_UserInfo" Association="Self.FK_UserOwnership_UserInfo">
+            <End Role="UserInfo" EntitySet="UserInfo" />
+            <End Role="UserOwnership" EntitySet="UserOwnership" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserOwnership_UserInfoOwner" Association="Self.FK_UserOwnership_UserInfoOwner">
+            <End Role="UserInfo" EntitySet="UserInfo" />
+            <End Role="UserOwnership" EntitySet="UserOwnership" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AppInventoryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Machine">
+          <Key>
+            <PropertyRef Name="MachineID" />
+          </Key>
+          <Property Name="MachineID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DistinguishedName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Manufacturer" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="SerialNumber" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="AssetTagNumber" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="OSID" Type="Int32" />
+          <Property Name="ModDt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="O" Relationship="Self.FK_Machine_OS" FromRole="Machine" ToRole="OS" />
+          <NavigationProperty Name="UserMachines" Relationship="Self.FK_UserMachine_Machine" FromRole="Machine" ToRole="UserMachine" />
+        </EntityType>
+        <EntityType Name="O">
+          <Key>
+            <PropertyRef Name="OSID" />
+          </Key>
+          <Property Name="OSID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="ModDt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Machines" Relationship="Self.FK_Machine_OS" FromRole="OS" ToRole="Machine" />
+        </EntityType>
+        <EntityType Name="UserInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DistinguishedName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Dept" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CostCenter" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Migrated" Type="Boolean" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModDt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserMachines" Relationship="Self.FK_UserMachine_UserInfo" FromRole="UserInfo" ToRole="UserMachine" />
+          <NavigationProperty Name="UserOwnerships" Relationship="Self.FK_UserOwnership_UserInfo" FromRole="UserInfo" ToRole="UserOwnership" />
+          <NavigationProperty Name="UserOwnerships1" Relationship="Self.FK_UserOwnership_UserInfoOwner" FromRole="UserInfo" ToRole="UserOwnership" />
+        </EntityType>
+        <EntityType Name="UserMachine">
+          <Key>
+            <PropertyRef Name="UserMachineID" />
+          </Key>
+          <Property Name="UserMachineID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MachineID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsPrimaryMachine" Type="Boolean" />
+          <Property Name="ModDt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Machine" Relationship="Self.FK_UserMachine_Machine" FromRole="UserMachine" ToRole="Machine" />
+          <NavigationProperty Name="UserInfo" Relationship="Self.FK_UserMachine_UserInfo" FromRole="UserMachine" ToRole="UserInfo" />
+        </EntityType>
+        <EntityType Name="UserOwnership">
+          <Key>
+            <PropertyRef Name="UserOwnershipID" />
+          </Key>
+          <Property Name="UserOwnershipID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OwnerUserID" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ModDt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UserInfo" Relationship="Self.FK_UserOwnership_UserInfo" FromRole="UserOwnership" ToRole="UserInfo" />
+          <NavigationProperty Name="UserInfo1" Relationship="Self.FK_UserOwnership_UserInfoOwner" FromRole="UserOwnership" ToRole="UserInfo" />
+        </EntityType>
+        <Association Name="FK_Machine_OS">
+          <End Role="OS" Type="Self.O" Multiplicity="0..1" />
+          <End Role="Machine" Type="Self.Machine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OS">
+              <PropertyRef Name="OSID" />
+            </Principal>
+            <Dependent Role="Machine">
+              <PropertyRef Name="OSID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMachine_Machine">
+          <End Role="Machine" Type="Self.Machine" Multiplicity="1" />
+          <End Role="UserMachine" Type="Self.UserMachine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Machine">
+              <PropertyRef Name="MachineID" />
+            </Principal>
+            <Dependent Role="UserMachine">
+              <PropertyRef Name="MachineID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserMachine_UserInfo">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
+          <End Role="UserMachine" Type="Self.UserMachine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserMachine">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserOwnership_UserInfo">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
+          <End Role="UserOwnership" Type="Self.UserOwnership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserOwnership">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserOwnership_UserInfoOwner">
+          <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
+          <End Role="UserOwnership" Type="Self.UserOwnership" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="UserOwnership">
+              <PropertyRef Name="OwnerUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AppInventoryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Machines" EntityType="Self.Machine" />
+          <EntitySet Name="OS" EntityType="Self.O" />
+          <EntitySet Name="UserInfoes" EntityType="Self.UserInfo" />
+          <EntitySet Name="UserMachines" EntityType="Self.UserMachine" />
+          <EntitySet Name="UserOwnerships" EntityType="Self.UserOwnership" />
+          <AssociationSet Name="FK_Machine_OS" Association="Self.FK_Machine_OS">
+            <End Role="OS" EntitySet="OS" />
+            <End Role="Machine" EntitySet="Machines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMachine_Machine" Association="Self.FK_UserMachine_Machine">
+            <End Role="Machine" EntitySet="Machines" />
+            <End Role="UserMachine" EntitySet="UserMachines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserMachine_UserInfo" Association="Self.FK_UserMachine_UserInfo">
+            <End Role="UserInfo" EntitySet="UserInfoes" />
+            <End Role="UserMachine" EntitySet="UserMachines" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserOwnership_UserInfo" Association="Self.FK_UserOwnership_UserInfo">
+            <End Role="UserInfo" EntitySet="UserInfoes" />
+            <End Role="UserOwnership" EntitySet="UserOwnerships" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserOwnership_UserInfoOwner" Association="Self.FK_UserOwnership_UserInfoOwner">
+            <End Role="UserInfo" EntitySet="UserInfoes" />
+            <End Role="UserOwnership" EntitySet="UserOwnerships" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AppInventoryModelStoreContainer" CdmEntityContainer="AppInventoryEntities">
+          <EntitySetMapping Name="Machines">
+            <EntityTypeMapping TypeName="AppInventoryModel.Machine">
+              <MappingFragment StoreEntitySet="Machine">
+                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DistinguishedName" ColumnName="DistinguishedName" />
+                <ScalarProperty Name="Manufacturer" ColumnName="Manufacturer" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="AssetTagNumber" ColumnName="AssetTagNumber" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="OSID" ColumnName="OSID" />
+                <ScalarProperty Name="ModDt" ColumnName="ModDt" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="ModUser" ColumnName="ModUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OS">
+            <EntityTypeMapping TypeName="AppInventoryModel.O">
+              <MappingFragment StoreEntitySet="OS">
+                <ScalarProperty Name="OSID" ColumnName="OSID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ModDt" ColumnName="ModDt" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="ModUser" ColumnName="ModUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserInfoes">
+            <EntityTypeMapping TypeName="AppInventoryModel.UserInfo">
+              <MappingFragment StoreEntitySet="UserInfo">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DistinguishedName" ColumnName="DistinguishedName" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="Dept" ColumnName="Dept" />
+                <ScalarProperty Name="CostCenter" ColumnName="CostCenter" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="Migrated" ColumnName="Migrated" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="ModDt" ColumnName="ModDt" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="ModUser" ColumnName="ModUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMachines">
+            <EntityTypeMapping TypeName="AppInventoryModel.UserMachine">
+              <MappingFragment StoreEntitySet="UserMachine">
+                <ScalarProperty Name="UserMachineID" ColumnName="UserMachineID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="MachineID" ColumnName="MachineID" />
+                <ScalarProperty Name="IsPrimaryMachine" ColumnName="IsPrimaryMachine" />
+                <ScalarProperty Name="ModDt" ColumnName="ModDt" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="ModUser" ColumnName="ModUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserOwnerships">
+            <EntityTypeMapping TypeName="AppInventoryModel.UserOwnership">
+              <MappingFragment StoreEntitySet="UserOwnership">
+                <ScalarProperty Name="UserOwnershipID" ColumnName="UserOwnershipID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="OwnerUserID" ColumnName="OwnerUserID" />
+                <ScalarProperty Name="ModDt" ColumnName="ModDt" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+                <ScalarProperty Name="ModUser" ColumnName="ModUser" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

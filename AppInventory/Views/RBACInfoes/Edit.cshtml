@@ -1,0 +1,77 @@
+﻿@model AppInventory.Models.RBACInfoGroup
+
+@{
+    ViewBag.Title = "Edit Role";
+}
+
+<h2>Edit Role - @Html.DisplayFor(model => model.Name)</h2>
+
+@Styles.Render("~/Content/chosen/css")
+@Scripts.Render("~/bundles/chosen")
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".chosen").chosen({ max_selected_options: 5 });
+        $(".chosen-deselect").chosen({ allow_single_deselect: true });
+    });
+</script>
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.RoleID)
+        @Html.HiddenFor(model => model.RowVersion)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Name)
+                @Html.HiddenFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("AD Groups", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="col-md-10">
+                @Html.ListBoxFor(model => model.Groups, ViewBag.ADGroups as MultiSelectList, new { @class = "chosen", data_placeholder = "Choose AD Groups..." })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Date Modified/Created", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.ModDt)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("User Modified/Created", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.ModUser)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn-link-menu" />
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+            </div>
+        </div>
+    </div>
+}

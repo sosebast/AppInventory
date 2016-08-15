@@ -1,0 +1,216 @@
+﻿@model AppInventory.Models.DeploymentBatchUser
+
+@{
+    ViewBag.Title = "Batch User - " + Model.UserInfo.UserName;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Scripts.Render("~/bundles/common")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.each($(".showRTGColor"), function () {
+            var color = getColorForPercentage(parseFloat($(this).text()) / 100)
+            $(this).css("background-color", color)
+        });
+    });
+</script>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Batch Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentBatch.Name)
+        </dd>
+
+        <dt>
+            Target End Dt
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentBatch.PlannedDt)
+        </dd>
+
+        <dt>
+            Deployment Start Dt
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentBatch.DeploymentDt)
+        </dd>
+
+        <dt>
+            Login ID
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.UserName)
+        </dd>
+
+        <dt>
+            Full Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.FullName)
+        </dd>
+
+        <dt>
+            Title
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.Title)
+        </dd>
+
+        <dt>
+            Dept
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.Dept)
+        </dd>
+
+        <dt>
+            High Level Dept
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.DeptHL)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.Email)
+        </dd>
+
+        <dt>
+            City
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.City)
+        </dd>
+
+        <dt>
+            Region
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.Region)
+        </dd>
+
+        <dt>
+            Win 7 Machine
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Machine.Name)
+        </dd>
+
+        <dt>
+            Win 10 Machine
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Machine1.Name)
+        </dd>
+
+        <dt>
+           Comments
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeploymentStatu.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeploymentStatu.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModUser)
+        </dd>
+
+
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "EditBatchUser", new { id = Model.DeploymentBatchUserID }, new { @class = "btn-link-menu" })
+    @Html.ActionLink("Back to List", "Users", new { id = Model.DeploymentBatchID }, new { @class = "btn-link-menu" })
+</p>
+
+
+@{
+    string totalAppCount = Convert.ToString(ViewBag.TotalAppCount);
+    string rtgAppCount = Convert.ToString(ViewBag.RTGAppCount);
+    string appsNotComplete = Convert.ToString(ViewBag.TotalAppCount - ViewBag.RTGAppCount);
+}
+
+@if (ViewBag.TotalAppCount != 0)
+{
+    <hr />
+
+    <div>
+        <h4>Apps</h4>
+    </div>
+
+    <table class="table-striped col-lg-6">
+        <tr>
+            <th>
+                App Count
+            </th>
+            <th>
+                RTG App Count
+            </th>
+            <th>
+                Remaining
+            </th>
+            <th class="text-center">
+                RTG
+            </th>
+        </tr>
+
+        <tr>
+            <th>
+                @Html.ActionLink(totalAppCount, "Index", "AppCI", new { UserID = Model.UserID }, new { target = "_blank" })
+            </th>
+            <td>
+                @Html.ActionLink(rtgAppCount, "Index", "AppCI", new { UserID = Model.UserID, StatusID = 3 }, new { target = "_blank" })
+            </td>
+            <td>
+                @appsNotComplete
+            </td>
+            <td class="text-center showRTGColor">
+                @ViewBag.RTG
+            </td>
+        </tr>
+    </table>
+    <br />
+    <br />
+}
+
+

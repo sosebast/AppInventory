@@ -1,0 +1,172 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.down-arrow-label,
+.up-arrow-label,
+.btn-link-label {
+    font-weight: normal;
+    color: #428bca;
+    cursor: pointer;
+    text-align: right;
+    padding-right: 20px;
+    border-radius: 0;
+    background-position: top right;
+    background-repeat: no-repeat;
+}
+
+.down-arrow-label {
+    background-image: url("/Content/Images/double-down.png");
+}
+
+.up-arrow-label {
+    background-image: url("/Content/Images/double-up.png");
+}
+
+    .down-arrow-label:hover,
+    .down-arrow-label:focus,
+    .up-arrow-label:hover,
+    .up-arrow-label:hover {
+        color: #2a6496;
+        text-decoration: underline;
+        background-color: transparent;
+    }
+
+.form-control-data-error,
+.form-control-data-saved {
+    font-weight: normal;
+    color: #428bca;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.form-control-data-error {
+    background-image: url("/Content/Images/red-cross.png");
+}
+
+.form-control-data-saved {
+    background-image: url("/Content/Images/green-tick.png");
+}
+
+
+.btn-link-menu {
+    border: none;
+    display: inline-block;
+    outline: 0;
+    padding: 6px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    color: #ffffff;
+    background-color: #555555;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-border-radius: 3;
+    -moz-border-radius: 3;
+    border-radius: 3px;
+}
+
+    .btn-link-menu:disabled {
+        cursor: not-allowed;
+        opacity: 0.3;
+    }
+
+        .btn-link-menu:disabled * {
+            pointer-events: none;
+        }
+
+        .btn-link-menu:disabled:hover {
+            box-shadow: none;
+        }
+
+    .btn-link-menu:hover {
+        text-decoration: none;
+        background-color: #ffffff;
+        color: #070707;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+
+
+  .row-control {
+  display: block;
+  width: 100%;
+  height: 26px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+
+.table-header-filter-add , .table-header-filter-clear {
+    cursor: pointer;
+    background-position: top right;
+    background-repeat: no-repeat;
+}
+
+.table-header-filter-add {
+    background-image: url("/Content/Images/filter-add.png");
+}
+
+.table-header-filter-clear {
+    background-image: url("/Content/Images/filter-clear.png");
+}

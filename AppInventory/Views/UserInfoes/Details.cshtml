@@ -1,0 +1,299 @@
+﻿@model AppInventory.Models.UserInfo
+@using AppInventory.Models
+@{
+    ViewBag.Title = "Details - " + Model.UserName;
+}
+@Scripts.Render("~/bundles/common")
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.each($(".showRTGColor"), function () {
+            var color = getColorForPercentage(parseFloat($(this).text()) / 100)
+            $(this).css("background-color", color)
+        });
+    });
+</script>
+
+<h2> @ViewBag.Title</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+             User Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+           Distinguished Name 
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DistinguishedName)
+        </dd>
+
+        <dt>
+           Full Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+          Title
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+           Employee ID
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeID)
+        </dd>
+
+        <dt>
+            Dept
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dept)
+        </dd>
+
+        <dt>
+            High Level Dept
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeptHL)
+        </dd>
+
+        <dt>
+            Cost Center
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CostCenter)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+           Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+           City
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.City)
+        </dd>
+
+        <dt>
+           State
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+
+        <dt>
+           ZipCode
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ZipCode)
+        </dd>
+
+        <dt>
+           Country
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+           Region
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Region)
+        </dd>
+
+        <dt>
+            Role
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmpRole)
+        </dd>
+
+        <dt>
+           Owned By
+        </dt>
+
+        <dd>
+           @if (Model.UserOwnerships.Count != 0)
+           {
+            @Html.ActionLink(Model.UserOwnerships.First().UserInfo1.UserName, "Details", new { id = Model.UserOwnerships.First().OwnerUserID })
+           }
+        </dd>
+
+        <dt>
+           Migrated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Migrated)
+        </dd>
+
+        <dt>
+           Deleted
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Deleted)
+        </dd>
+
+        <dt>
+           Deleted On
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeletedOn)
+        </dd>
+
+        <dt>
+            Mod Dt
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModDt)
+        </dd>
+
+        <dt>
+            Mod User
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModUser)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+</p>
+@if (Model.UserMachines.Count != 0)
+{
+    <hr />
+
+    <div>
+        <h4>Machines</h4>
+    </div>
+
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th class="col-md-6">
+                Hostname
+            </th>
+            <th>
+                Is Primary
+            </th>
+            <th>
+                Serial #
+            </th>
+            <th>
+                OS
+            </th>
+        </tr>
+
+        @foreach (var item in Model.UserMachines)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Machine.Name, "Details", "Machines", new { id = item.MachineID }, null)
+                </td>
+                <td>
+                    @{
+                        bool isPrimary = item.IsPrimaryMachine.HasValue ? item.IsPrimaryMachine.Value : false;
+                    }
+                    @Html.CheckBox("IsPrimary", isPrimary, new { @class = "input", ReadOnly = "true" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Machine.SerialNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Machine.O.Name)
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@{
+    string totalAppCount = Convert.ToString(ViewBag.TotalAppCount);
+    string rtgAppCount = Convert.ToString(ViewBag.RTGAppCount);
+    string appsNotComplete = Convert.ToString(ViewBag.TotalAppCount - ViewBag.RTGAppCount);
+}
+
+@if (ViewBag.TotalAppCount != 0)
+{
+    <hr />
+
+    <div>
+        <h4>Apps</h4>
+    </div>
+   
+    <table class="table-striped col-lg-6">
+        <tr>
+            <th>
+                App Count
+            </th>
+            <th>
+                RTG App Count
+            </th>
+            <th>
+                Remaining
+            </th>
+            <th class="text-center">
+                RTG
+            </th>
+        </tr>
+
+            <tr>
+                <th>
+                    @Html.ActionLink(totalAppCount, "Index", "AppCI", new { UserID = Model.UserID }, new { target = "_blank" })
+                </th>
+                <td>
+                    @Html.ActionLink(rtgAppCount, "Index", "AppCI", new { UserID = Model.UserID, StatusID = 3 }, new { target = "_blank" })
+                </td>
+                <td>
+                    @appsNotComplete
+                </td>
+                <td class="text-center showRTGColor">
+                    @ViewBag.RTG
+                </td>
+            </tr>
+    </table>
+    <br />
+    <br />
+}

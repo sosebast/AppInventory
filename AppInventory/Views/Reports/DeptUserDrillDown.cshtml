@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Deployments";
+}
+
+@Styles.Render("~/Content/themes/base/css")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/chart")
+@Scripts.Render("~/bundles/common")
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var rptChart;
+        var defaultHeight = 600;
+
+        showDeptUserSummary = function (setCanvasHeight) {
+            if (rptChart != undefined)
+                rptChart.destroy();
+
+            $.getJSON("/chart/deptUserSummary")
+             .done(function (chartData) {
+                 var title = "Total Deployment Count: " + chartData.SumTotal.toString();
+                 if (setCanvasHeight) {
+                     var ctx = $("#rptChart")[0].getContext('2d');
+                     ctx.canvas.height = defaultHeight;
+                 }
+ 
+                 rptChart = barChart($("#rptChart"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters, true);
+                 var titlebar = $('#rptTitle');
+                 titlebar.text(title);
+                 titlebar.attr('title', 'Click here to see all deployments');
+                 titlebar.click(function (e) {
+                     location.href = "/UserMachines";
+                 });
+             });
+        }
+
+        showDeptHLUser = function (deptHL) {
+            if (rptChart != null)
+                rptChart.destroy();
+
+
+            $.getJSON("/chart/deptHLUser", { deptHL: deptHL })
+            .done(function (chartData) {
+                var title = "Deployments - " + deptHL + " (Total: " + chartData.SumTotal.toString() + ")";
+                var ctx = $("#rptChart")[0].getContext('2d');
+                var bars = chartData.Labels.length;
+                if (bars > 20)
+                    ctx.canvas.height = bars * 24;
+                else
+                    ctx.canvas.height = defaultHeight;
+
+                rptChart = barChart($("#rptChart"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters, true, null, 'horizontalBar');
+                var titlebar = $('#rptTitle');
+                titlebar.text(title);
+                titlebar.attr('title', 'Click here to see all deployments under ' + deptHL);
+                titlebar.click(function (e) {
+                    location.href = "/UserMachines?DeptHL=" + encodeURIComponent(deptHL);
+                });
+
+            });
+        }
+
+        showDeptUserFiltered = function () {
+            if (rptChart != null)
+                rptChart.destroy();
+
+            var deptHL = $('#SearchString').val();
+
+            $.getJSON("/chart/deptUserFiltered", { dept: deptHL })
+            .done(function (chartData) {
+                var title = "Deployments - " + deptHL + "% (Total: " + chartData.SumTotal.toString() + ")";
+                var ctx = $("#rptChart")[0].getContext('2d');
+                var bars = chartData.Labels.length;
+                if (bars > 20)
+                    ctx.canvas.height = bars * 24;
+                else
+                    ctx.canvas.height = defaultHeight;
+
+                rptChart = barChart($("#rptChart"), chartData.Label, chartData.Labels, chartData.Values, chartData.Filters, true, null, 'horizontalBar');
+                var titlebar = $('#rptTitle');
+                titlebar.text(title);
+                titlebar.attr('title', 'Click here to see all deployments under ' + deptHL);
+                titlebar.click(function (e) {
+                    location.href = "/UserMachines?DeptFilter=" + encodeURIComponent(deptHL);
+                });
+
+            });
+        }
+
+        $('#search_form').submit(function () {
+            showDeptUserFiltered()
+            return false;
+        });
+
+        showDeptUserSummary(false);
+
+    });
+</script>
+
+<div onclick="showDeptUserSummary(true)" style="cursor:pointer">
+    <h2>@ViewBag.Title</h2>
+</div>
+<br />
+<div class="row">
+    <form id="search_form">
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "col-md-6 form-control", placeholder = "Dept filter e.g. TECH,APG..." })
+        <div class="col-md-3">
+            <input type="submit" id="btnFilter" value="Apply Filter" class="btn-link-menu"/>
+        </div>
+    </form>
+</div>
+<br />
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="lead btn-link-label" id="rptTitle">Applications</div>
+        <hr />
+        <canvas id="rptChart" style="cursor:pointer"></canvas>
+    </div>
+</div>
+

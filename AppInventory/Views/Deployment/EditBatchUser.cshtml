@@ -1,0 +1,91 @@
+﻿@model AppInventory.Models.DeploymentBatchUser
+
+@{
+    ViewBag.Title = "Edit Batch User - " + Model.UserInfo.UserName;
+}
+
+<h2>Edit Batch User</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>DeploymentBatchUser</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.DeploymentBatchUserID)
+        @Html.HiddenFor(model => model.DeploymentBatchID)
+        @Html.HiddenFor(model => model.UserID)
+        @Html.HiddenFor(model => model.RowVersion)
+
+
+        <div class="form-group">
+            @Html.Label("Batch Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Label(Model.DeploymentBatch.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Target End Dt", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.Label(Model.DeploymentBatch.PlannedDt.ToShortDateString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.Label("Login ID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.Label(Model.UserInfo.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Full Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.Label(Model.UserInfo.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Win 7 Machine", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Machine.Name, "Win 7 Machine", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Machine.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Win 10 Machine", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Machine1.Name, "Win 10 Machine", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Machine.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Status", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("StatusID", ViewBag.DeploymentStaus as SelectList, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StatusID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Comments, 5, 30, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn-link-menu"  />
+                @Html.ActionLink("Back to Details", "BatchUser", new { id = Model.DeploymentBatchUserID }, new { @class = "btn-link-menu" })
+            </div>
+        </div>
+    </div>
+}

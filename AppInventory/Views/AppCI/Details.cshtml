@@ -1,0 +1,506 @@
+﻿@model AppInventory.Models.AppCI
+
+@{
+    ViewBag.Title = "Application Details";
+}
+
+<h2>Application Details - @Html.DisplayFor(model => model.App.Name) </h2>
+<hr />
+<table class="table-condensed col-lg-12">
+    <tr>
+        <th><h4>Package Details</h4><hr /></th>
+        <th><h4>Ownership, Testing...</h4><hr /></th>
+    </tr>
+    <tr>
+        <td class="col-lg-6" valign="top">
+            <div>
+                <dl class="dl-horizontal">
+                    <dt>
+                        App CI ID
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.AppCIID)
+                    </dd>
+                    <dt>
+                        CM ID
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CMID)
+                    </dd>
+
+                    <dt>
+                        Manufacturer
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.Manufacturer)
+                    </dd>
+
+                    <dt>
+                        Name
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.Name)
+                    </dd>
+
+                    <dt>
+                        Version
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.Version)
+                    </dd>
+
+                    <dt>
+                        CM Model
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CMModel)
+                    </dd>
+
+                    <dt>
+                        Folder Path
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FolderPath)
+                    </dd>
+
+                    <dt>
+                        Deployment Tool
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.DeploymentTool)
+                    </dd>
+
+                    <dt>
+                        Deployment Group
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.DeploymentGroup)
+                    </dd>
+
+                    <dt>
+                        Disposition
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AppDisposition.Disposition)
+                    </dd>
+
+                    <dt>
+                        Remediation Status
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.AppStatu.Status)
+                    </dd>
+
+                    <dt>
+                        Packaging Status
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.AppPkgStatu.Status)
+                    </dd>
+
+                    <dt>
+                        Reboot Required?
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.RebootReq)
+                    </dd>
+
+                    <dt>
+                        Logon Required?
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.LogonReq)
+                    </dd>
+
+                    <dt>
+                        Notes
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Notes)
+                    </dd>
+
+                    <dt>
+                        LicensingInfo
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.LicensingInfo)
+                    </dd>
+
+                    <dt>
+                        Deleted?
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Deleted)
+                    </dd>
+
+                    <dt>
+                        Deleted On
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.DeletedOn)
+                    </dd>
+
+                    <dt>
+                        Created/Modified Date
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ModDt)
+                    </dd>
+
+                    <dt>
+                        Last Modified User
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ModUser)
+                    </dd>
+                </dl>
+            </div>
+        </td>
+        <td class="col-lg-6" valign="top">
+            <div>
+                <dl class="dl-horizontal">
+                    <dt>
+                        App ID
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.AppID)
+                    </dd>
+                    <dt>
+                        Description
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.Description)
+                    </dd>
+
+                    <dt>
+                        Language
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.Language)
+                    </dd>
+
+                    <dt>
+                        Beast ID
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.BeastID)
+                    </dd>
+
+                    <dt>
+                        AppDesk ID
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.AppDeskID)
+                    </dd>
+
+                    <dt>
+                        Technical Owner
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.TechnicalOwner)
+                    </dd>
+
+                    <dt>
+                        Business Owner
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.BusinessOwner)
+                    </dd>
+
+                    <dt>
+                        Primary Tester
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.PrimaryTester)
+                    </dd>
+
+                    <dt>
+                        Secondary Tester
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.SecondaryTester)
+                    </dd>
+
+                    <dt>
+                        License Required
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.LicenseRequired)
+                    </dd>
+
+                    <dt>
+                        License Owner
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.LicenseOwner)
+                    </dd>
+
+
+                    <dt>
+                        Deleted?
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.Deleted)
+                    </dd>
+
+                    <dt>
+                        Deleted On
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.DeletedOn)
+                    </dd>
+
+                    <dt>
+                        Created/Modified Date
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.ModDt)
+                    </dd>
+
+                    <dt>
+                        Last Modified User
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.App.ModUser)
+                    </dd>
+                </dl>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>
+                @Html.ActionLink("Edit Package Details", "Edit", new { id = Model.AppCIID }, new { @class = "btn-link-menu"}) 
+                @if (Model.App.AppScope != null && Model.App.AppScope.Scope != "Global")
+                {
+                    @Html.ActionLink("View Users", "Users", new { id = Model.AppCIID }, new { @class = "btn-link-menu", @target = "_blank" }) 
+                }
+                
+                @Html.ActionLink("Change History", "ChangeLog", new { id = Model.AppCIID }, new { @class = "btn-link-menu", @target = "_blank"}) 
+            </p>
+        </td>
+        <td>
+            <p>
+                @Html.ActionLink("Edit Ownership Testing...", "Edit", "App", new { id = Model.App.AppID }, new { @class = "btn-link-menu" })  
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+            </p>
+        </td>
+    </tr>
+</table>
+
+<div id="result" style="display:none;"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#result").dialog({
+            autoOpen: false,
+            title: 'Users',
+            width: 500,
+            height: 'auto',
+            modal: true
+        });
+    });
+    function openPopup() {
+        $("#result").dialog("open");
+    }
+</script>
+
+@if (Model.AppDependencies.Count != 0)
+{
+    <hr />
+
+    <div>
+        <h4>Dependencies</h4>
+    </div>
+
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th class="col-md-6">
+                Name
+            </th>
+            <th>
+                Manufacturer
+            </th>
+            <th>
+                Version
+            </th>
+            <th>
+                CM ID
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+
+        @foreach (var item in Model.AppDependencies)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.AppCI1.App.Name, "Details", new { id = item.DependentAppCIID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI1.App.Manufacturer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI1.App.Version)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI1.CMID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI1.AppStatu.Status)
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@if (Model.AppDependencies1.Count != 0)
+{
+    <hr />
+    <div>
+        <h4>References</h4>
+    </div>
+
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th class="col-md-6">
+                Name
+            </th>
+            <th>
+                Manufacturer
+            </th>
+            <th>
+                Version
+            </th>
+            <th>
+                CM ID
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+
+        @foreach (var item in Model.AppDependencies1)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.AppCI.App.Name, "Details", new { id = item.AppCIID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI.App.Manufacturer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI.App.Version)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI.CMID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI.AppStatu.Status)
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+
+@if (Model.AppSupersedences.Count != 0)
+{
+    <hr />
+    <div>
+        <h4>Superseded By</h4>
+    </div>
+
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th class="col-md-6">
+                Name
+            </th>
+            <th>
+                Manufacturer
+            </th>
+            <th>
+                Version
+            </th>
+            <th>
+                CM ID
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+
+        @foreach (var item in Model.AppSupersedences)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.AppCI1.App.Name, "Details", new { id = item.SupersedesAppCIID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI1.App.Manufacturer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI1.App.Version)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI1.CMID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI1.AppStatu.Status)
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@if (Model.AppSupersedences1.Count != 0)
+{
+    <hr />
+    <div>
+        <h4>Supersedes</h4>
+    </div>
+
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th class="col-md-6">
+                Name
+            </th>
+            <th>
+                Manufacturer
+            </th>
+            <th>
+                Version
+            </th>
+            <th>
+                CM ID
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+
+        @foreach (var item in Model.AppSupersedences1)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.AppCI.App.Name, "Details", new { id = item.AppCIID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI.App.Manufacturer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI.App.Version)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI.CMID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppCI.AppStatu.Status)
+                </td>
+            </tr>
+        }
+    </table>
+}

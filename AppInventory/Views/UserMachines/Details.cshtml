@@ -1,0 +1,122 @@
+﻿@model AppInventory.Models.UserMachine
+
+@{
+    ViewBag.Title = "User Machine Details";
+}
+
+<h2>View</h2>
+
+<div>
+    <h4>UserMachine</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            User Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.UserName)
+        </dd>
+
+        <dt>
+            Full Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.FullName)
+        </dd>
+
+        <dt>
+            Title
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.Title)
+        </dd>
+
+        <dt>
+            Dept
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.Dept)
+        </dd>
+
+        <dt>
+            High Level Dept
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.DeptHL)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.Email)
+        </dd>
+
+        <dt>
+            City
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.City)
+        </dd>
+
+        <dt>
+            Region
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserInfo.Region)
+        </dd>
+
+        <dt>
+            Hostname
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Machine.Name)
+        </dd>
+
+        <dt>
+             Is Primary Machine
+        </dt>
+        <dd>
+            @Html.CheckBox("IsPrimary", Model.IsPrimaryMachine.HasValue ? Model.IsPrimaryMachine.Value : false, new { @class = "input", ReadOnly = "true" })
+        </dd>
+
+        <dt>
+            OS
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Machine.O.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModUser)
+        </dd>
+
+        
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.UserMachineID }, new { @class = "btn-link-menu" })     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+</p>

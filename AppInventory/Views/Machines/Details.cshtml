@@ -1,0 +1,169 @@
+﻿@model AppInventory.Models.Machine
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Machine</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DistinguishedName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DistinguishedName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Manufacturer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Manufacturer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SerialNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SerialNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AssetTagNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AssetTagNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModDt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModDt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.O.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.O.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MachineID }, new { @class = "btn-link-menu" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+</p>
+
+@if (Model.UserMachines.Count != 0)
+{
+    <hr />
+
+    <div>
+        <h4>Users</h4>
+    </div>
+
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Fullname
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Dept
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Country
+            </th>
+            <th>
+                Primary?
+            </th>
+        </tr>
+
+        @foreach (var item in Model.UserMachines)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.UserInfo.UserName, "BatchUser", new { id = item.UserID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Dept)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.UserInfo.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.UserInfo.Country)
+                </td>
+                <td>
+                    @{
+            bool isPrimary = item.IsPrimaryMachine.HasValue ? item.IsPrimaryMachine.Value : false;
+                    }
+                    @Html.CheckBox("IsPrimary", isPrimary, new { @class = "input", ReadOnly = "true" })
+                </td>
+            </tr>
+        }
+    </table>
+}

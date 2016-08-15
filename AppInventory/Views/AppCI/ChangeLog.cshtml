@@ -1,0 +1,102 @@
+﻿@model PagedList.IPagedList<AppInventory.Models.AppCIChangeLog>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Application Change Log - " + ViewBag.CurrentAppName;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+<table class="table-striped col-lg-12">
+    <tr>
+        <th>
+            Change Type
+        </th>
+       <th>
+            CM ID
+        </th>
+        <th>
+            Business Owner
+        </th>
+        <th>
+            Tech Owner
+        </th>
+        <th>
+           Primary Tester
+        </th>
+        <th>
+            Secondary Tester
+        </th>
+        <th>
+            Disposition
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Packaging Status
+        </th>
+        <th>
+            Change Desc
+        </th>
+        <th>
+           Mod Dt
+        </th>
+        <th>
+            Mod User
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppChangeType.Change)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CMID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BusinessOwner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TechnicalOwner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrimaryTester)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecondaryTester)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppDisposition.Disposition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppStatu.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppPkgStatu.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChangeDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModDt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModUser)
+            </td>
+        </tr>
+    }
+</table>
+<br />
+<div class="col-md-6">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+</div>
+<div class="col-md-6" style="text-align:right">Total Change: <b>@Model.TotalItemCount</b></div>
+
+@Html.PagedListPager(Model, page => Url.Action("ChangeLog", new { page,  sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+@Html.ActionLink("Back to Details", "Details", new { id = ViewBag.AppCIID }, new { @class = "btn-link-menu" })
+@Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })

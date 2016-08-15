@@ -1,0 +1,59 @@
+﻿@model IEnumerable<AppInventory.Models.RBACInfo>
+
+@{
+    ViewBag.Title = "Roles";
+}
+
+<h2>Roles</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn-link-menu" })
+</p>*@
+<table class="table-striped col-lg-12">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+           AD Groups
+        </th>
+        <th>
+            Date Modified/Created
+        </th>
+        <th>
+            User Modified/Created
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.Raw(string.Join(", ", item.RBACGroups.Select(a => a.Group.Name)))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModDt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModUser)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.RoleID }) 
+                @*@if (item.Name != "Admin"){
+                    @Html.ActionLink("Delete", "Delete", new { id = item.RoleID });
+                }*@ 
+            </td>
+        </tr>
+    }
+
+</table>

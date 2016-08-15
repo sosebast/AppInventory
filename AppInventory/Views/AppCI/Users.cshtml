@@ -1,0 +1,90 @@
+﻿@model PagedList.IPagedList<AppInventory.Models.vUserAppDtl>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users - @ViewBag.ApplicationName</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <p>
+        <div>
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control col-md-4" })
+            <div class="col-md-3">
+                <input type="submit" value="Search" class="btn-link-menu" />
+            </div>
+        </div>
+    </p>
+    <br />
+    <br />
+    <table class="table-striped col-lg-12">
+        <tr>
+            <th>
+                @Html.ActionLink("Login ID", "Users", new { id = ViewBag.AppCIID, sortOrder = ViewBag.LoginIDSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Fullname", "Users", new { id = ViewBag.AppCIID, sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                @Html.ActionLink("Dept", "Users", new { id = ViewBag.AppCIID, sortOrder = ViewBag.DeptSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Country
+            </th>
+            <th>
+                Machine
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.ActionLink(item.UserInfo.UserName, "Details", "UserInfoes", new { id = item.UserID }, null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserInfo.Dept)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.UserInfo.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.UserInfo.Country)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Machine.Name)
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
+<br />
+<div class="col-md-6">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+</div>
+<div class="col-md-6" style="text-align:right">Total Users: <b>@Model.TotalItemCount</b></div>
+
+@Html.PagedListPager(Model, page => Url.Action("Users", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+@Html.ActionLink("Back to Details", "Details", new { id = ViewBag.AppCIID }, new { @class = "btn-link-menu" })
+@Html.ActionLink("Back to List", "Index", null, new { @class = "btn-link-menu" })
+
+

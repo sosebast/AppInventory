@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fd6fc5b3a37a46e2a206e1983e85e87b" Name="Diagram1">
+        <EntityTypeShape EntityType="AppInventoryModel.App" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppCI" Width="1.5" PointX="3" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppCIO" Width="1.5" PointX="8.25" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppDependency" Width="1.5" PointX="5.25" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppDisposition" Width="1.5" PointX="0.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppMSIInfo" Width="1.5" PointX="5.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppScope" Width="1.5" PointX="1.5" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppStatu" Width="1.5" PointX="0.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppSupersedence" Width="1.5" PointX="5.25" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.DeploymentBatch" Width="1.5" PointX="9" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.DeploymentBatchUser" Width="1.5" PointX="11.25" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.DeploymentStatu" Width="1.5" PointX="9" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.Group" Width="1.5" PointX="6" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.GroupApp" Width="1.5" PointX="8.25" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.GroupMember" Width="1.5" PointX="8.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.Machine" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.MachineApp" Width="1.5" PointX="5.25" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.O" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.RBACGroup" Width="1.5" PointX="11.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.RBACInfo" Width="1.5" PointX="9" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.UserApp" Width="1.5" PointX="8.25" PointY="20.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.UserInfo" Width="1.5" PointX="6" PointY="29.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.UserMachine" Width="1.5" PointX="11.25" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.UserOwnership" Width="1.5" PointX="8.25" PointY="39.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.vDeptAppDtl" Width="1.5" PointX="11.25" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.vw_AppCIOSDtl" Width="1.5" PointX="11.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.vw_DeptAppDtl" Width="1.5" PointX="13.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.vw_UserMachineAppActual" Width="1.5" PointX="13.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AppInventoryModel.vw_UserMachineAppNonGlobal" Width="1.5" PointX="13.75" PointY="12.875" IsExpanded="true" />
+        <AssociationConnector Association="AppInventoryModel.FK_App_AppScope" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCI_App" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_vDeptAppDtl_App" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCI_AppDisposition" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCI_AppStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCIOS_AppCI" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppDependency_AppCI" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppDependency_AppCI1" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppSupersedence_AppCI" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppSupersedence_AppCI1" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_GroupApp_AppCI" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_MachineApp_AppCI" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_UserApp_AppCI" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_vDeptAppDtl_AppCI" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCIOS_OS" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_DeploymentBatchUser_DeploymentBatch" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_DeploymentBatchUser_DeploymentStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_DeploymentBatchUser_Machine" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_DeploymentBatchUser_Machine1" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_DeploymentBatchUser_UserInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_GroupApp_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_GroupMember_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_RBACGroup_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_Machine_OS" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_MachineApp_Machine" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_UserMachine_Machine" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_RBACGroup_RBACInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_UserApp_UserInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_UserMachine_UserInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_UserOwnership_UserInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="AppInventoryModel.FK_UserOwnership_UserInfoOwner" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AppInventoryModel.vUserAppDtl" Width="1.5" PointX="8.25" PointY="0.75" />
+        <AssociationConnector Association="AppInventoryModel.FK_vUserAppDtl_App" />
+        <AssociationConnector Association="AppInventoryModel.FK_vUserAppDtl_AppCI" />
+        <AssociationConnector Association="AppInventoryModel.FK_vUserAppDtl_Machine" />
+        <AssociationConnector Association="AppInventoryModel.FK_vUserAppDtl_UserInfo" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppChangeType" Width="1.5" PointX="3" PointY="23.125" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppCIChangeLog" Width="1.5" PointX="5.25" PointY="16.5" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCIChangeLog_App" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCIChangeLog_AppChangeType" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCIChangeLog_AppCI" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCIChangeLog_AppDisposition" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCIChangeLog_AppStatus" />
+        <EntityTypeShape EntityType="AppInventoryModel.AppPkgStatu" Width="1.5" PointX="16.375" PointY="1" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCI_AppPkgStatus" />
+        <AssociationConnector Association="AppInventoryModel.FK_AppCIChangeLog_AppPkgStatus" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
